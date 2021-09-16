@@ -1,6 +1,5 @@
 program teste
-
-	real: a,b;
+  real: a,b;
 	integer: c, d;
 begin 
 	read(a);

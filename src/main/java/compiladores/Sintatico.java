@@ -36,12 +36,12 @@ public class Sintatico {
        if (token != null && token.getTipo() == Token.IDENT) {
         obtemSimbolo();
         corpo(); 
-        //if (simbolo.equals(".")) {
-         // obtemSimbolo();
+        if (simbolo.equals(".")) {
+          obtemSimbolo();
        
-          //} else {
-         //   throw new RuntimeException("Erro Sintático esperado '.'"); 
-         // }         
+          } else {
+            throw new RuntimeException("Erro Sintático esperado '.'"); 
+           }         
         }  
     } else {
         throw new RuntimeException("Erro Sintático esperado 'program'"); 
@@ -51,19 +51,26 @@ public class Sintatico {
     
   private void corpo(){
     dc();
-    if (simbolo.equals("begin")) {
+    if (token != null && token.getTipo() == Token.IDENT) {
       obtemSimbolo();
+    //if (simbolo.equals("begin")) {
+     // obtemSimbolo();
       comandos();
+      if (token != null && token.getTipo() == Token.IDENT) {
+        obtemSimbolo();
 
-      } if (simbolo.equals("end")){
+     // } if (simbolo.equals("end")){
+        //obtemSimbolo();
+     // }
+     }if (token != null && token.getTipo() == Token.IDENT) {
         obtemSimbolo();
       }
+    }
   }
 
   private void dc(){
     dc_v();
-      mais_dc();
-   
+      mais_dc();   
   }
 
   private void mais_dc(){
@@ -85,15 +92,18 @@ public class Sintatico {
   }
 
   private void tipo_var(){
-    if(simbolo.equals("real") || simbolo.equals("integer")){
+    if (token != null && token.getTipo() == Token.IDENT || token.getTipo() == Token.IDENT ) {
       obtemSimbolo();
+    //if(simbolo.equals("real") || simbolo.equals("integer")){
+      //obtemSimbolo();
     } else {
       throw new RuntimeException("Erro Sintático esperado 'real' ou 'integer'");
     }
   } 
 
   private void variaveis(){
-    if (simbolo.equals("ident")){
+    if (token != null && token.getTipo() == Token.IDENT){
+    //if (simbolo.equals("ident")){
       obtemSimbolo();
       mais_var();
 
@@ -126,39 +136,46 @@ public class Sintatico {
   private void comando(){
     switch(simbolo){
       case "read":
+      if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo();
-        if (simbolo.equals("(")){
+        }if (simbolo.equals("(")){
           obtemSimbolo();
-          }if (simbolo.equals("ident")){
+            }if (token != null && token.getTipo() == Token.IDENT){
+          //}if (simbolo.equals("ident")){
             obtemSimbolo();
             }if (simbolo.equals(")")){
               obtemSimbolo();
         }
         break;
       case "write":
-        obtemSimbolo();
-        if (simbolo.equals(")")){
+        if (token != null && token.getTipo() == Token.IDENT){
           obtemSimbolo();
-          }if (simbolo.equals("ident")){
+          }if (simbolo.equals(")")){
+          obtemSimbolo();
+            }if (token != null && token.getTipo() == Token.IDENT){
+          //}if (simbolo.equals("ident")){
             obtemSimbolo();
             }if (simbolo.equals(")")){
               obtemSimbolo();
         }         
         break;
       case "ident":
+        if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo();
-        if (simbolo.equals(":")){
+          }if (simbolo.equals(":")){
           obtemSimbolo();
-          }if (simbolo.equals("=")){
+            }if (simbolo.equals("=")){
             obtemSimbolo();
             expressao();
         }
         break;
 
       case "if":
+         if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo();
         condicao();
-        if (simbolo.equals("then")){
+          }if (token != null && token.getTipo() == Token.IDENT){
+          //}if (simbolo.equals("then")){
           obtemSimbolo();
           comandos();
           pfalsas();
@@ -233,15 +250,21 @@ public class Sintatico {
   private void fator(){
     switch(simbolo){
       case "ident":
-        obtemSimbolo();                
+      if (token != null && token.getTipo() == Token.IDENT){
+        obtemSimbolo();
+      }                
         break;
 
-      case "numero_int":
-        obtemSimbolo();        
+      case "numero_int":                
+        if (token != null && token.getTipo() == Token.IDENT){
+          obtemSimbolo();
+        }
         break;
 
       case "numero_real":
-        obtemSimbolo();        
+      if (token != null && token.getTipo() == Token.IDENT){
+        obtemSimbolo(); 
+      }       
         break;
 
       case "(>)":  
@@ -287,7 +310,8 @@ public class Sintatico {
   }
 
   private void pfalsas(){
-    if(simbolo.equals("else")){
+    if (token != null && token.getTipo() == Token.IDENT){
+    //if(simbolo.equals("else")){
       obtemSimbolo();      
       } else {
          throw new RuntimeException("Erro Sintático ");
