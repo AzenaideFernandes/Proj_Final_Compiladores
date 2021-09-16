@@ -36,14 +36,17 @@ public class Sintatico {
        if (token != null && token.getTipo() == Token.IDENT) {
         obtemSimbolo();
         corpo(); 
+        //if (simbolo.equals(".")) {
+         // obtemSimbolo();
        
-        } else {
-          throw new RuntimeException("Erro Sintático esperado '.'"); 
-        }         
-      
+          //} else {
+         //   throw new RuntimeException("Erro Sintático esperado '.'"); 
+         // }         
+        }  
     } else {
         throw new RuntimeException("Erro Sintático esperado 'program'"); 
     }
+    
   }
     
   private void corpo(){
