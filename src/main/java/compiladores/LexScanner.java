@@ -25,7 +25,7 @@ public class LexScanner {
         estado = 0;
         char c;
         Token token = null;
-        String termo = " ";
+        String termo = "";
         while(true) {
            if (isEOF()) {
                pos = conteudo.length + 1;

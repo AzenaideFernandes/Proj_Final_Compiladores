@@ -4,6 +4,7 @@ public class Sintatico {
 
   private LexScanner scan;
   private String simbolo;
+  private Token token; 
 
   public Sintatico(String arq){
     scan = new LexScanner(arq);
@@ -32,18 +33,10 @@ public class Sintatico {
     if (simbolo.equals("program")) {
       obtemSimbolo();
       
-       if (simbolo.equals("ident")) {
+       if (token != null && token.getTipo() == Token.IDENT) {
         obtemSimbolo();
-        corpo();
-
-      //} else {
-       // throw new RuntimeException("Erro Sintático esperado 'ident'"); 
-     // }
-       // if (simbolo.equals(".")){
-        //  obtemSimbolo();
-        
-      
-
+        corpo(); 
+       
         } else {
           throw new RuntimeException("Erro Sintático esperado '.'"); 
         }         
@@ -67,19 +60,14 @@ public class Sintatico {
   private void dc(){
     dc_v();
       mais_dc();
-   // if ("cadeia vazia"){
-    // NAO SEI O QUE FAZER *************
-   // }
+   
   }
 
   private void mais_dc(){
     if (simbolo.equals(";")) {
       obtemSimbolo();
       dc();
-    }
-   // if ("cadeia vazia"){
-    // NAO SEI O QUE FAZER *************
-   // }
+    }   
   }
 
   private void dc_v(){
@@ -112,27 +100,23 @@ public class Sintatico {
   }
 
   private void mais_var(){
-    variaveis();
-  //  if("cadeia vazia"){
-     // NAO SEI O QUE FAZER ************* 
-   // }
+    if (simbolo.equals(",")){
+      obtemSimbolo();
+      variaveis();
+    }  
   }
 
   private void comandos(){
     comando();
-    mais_comandos();
+     mais_comandos();
   }
 
   private void mais_comandos(){
-    switch(simbolo){
-      case ";":
-        obtemSimbolo();
+    if (simbolo.equals(";")){
+      obtemSimbolo();      
         comandos();
-      case "cadeia vazia":
-      // NAO SEI O QUE FAZER ************* 
-        break; 
-      default:
-      throw new RuntimeException("Erro Sintático esperado ';' ou ... ");
+     } else {   
+        throw new RuntimeException("Erro Sintático esperado ';'");
     }
   }
   
@@ -198,30 +182,28 @@ public class Sintatico {
         obtemSimbolo();                
         break;
 
-      case "<":
-        obtemSimbolo();
-        if (simbolo.equals(">")){
-          obtemSimbolo();          
-        }         
+      case "<>":
+        obtemSimbolo();               
         break;
 
-      case ">":
-        obtemSimbolo();
-        if (simbolo.equals("=")){
-          obtemSimbolo();          
-        }
+      case ">=":
+        obtemSimbolo();        
         break;
 
-    /*  case ">":  // O QUE FAZER??
-        obtemSimbolo();
-        condicao();                          // COMO RESOLVER?
-        if (simbolo.equals("=")){
-          obtemSimbolo();          
-          }    
-        break;*/
+      case "<=": 
+        obtemSimbolo();        
+        break;
+
+        case ">": 
+        obtemSimbolo();        
+        break;
+
+        case "<": 
+        obtemSimbolo();        
+        break;
 
       default:   // O QUE SIGNIFICA AQUI NO CODIGO?
-      throw new RuntimeException("Erro Sintático esperado 'c' ou 'e'");
+      throw new RuntimeException("Erro Sintático ");
     }
 
   }
@@ -240,9 +222,9 @@ public class Sintatico {
   }
 
  private void op_un(){
-    if(simbolo.equals("-") || simbolo.equals("cadeia vazia")){
+    if(simbolo.equals("-")){ 
       obtemSimbolo();
-    }  // O QUE FAZER???
+    }
   }
 
   private void fator(){
@@ -276,11 +258,7 @@ public class Sintatico {
   private void outros_termos(){
       op_ad();
       termo();
-      outros_termos();
-
-      if (simbolo.equals("cadeia vazia")){    //????
-          obtemSimbolo();          
-        }
+      outros_termos();      
   } 
   
   private void op_ad(){
@@ -294,14 +272,7 @@ public class Sintatico {
   private void mais_fatores(){
     op_mul();
     fator();
-    mais_fatores();
-
-    if (simbolo.equals("cadeia vazia")){    //????
-          obtemSimbolo();          
-        
-    } else {
-      throw new RuntimeException("Erro Sintático ");
-    }     
+    mais_fatores();         
   }
 
   private void op_mul(){
@@ -314,13 +285,11 @@ public class Sintatico {
 
   private void pfalsas(){
     if(simbolo.equals("else")){
-      obtemSimbolo();
-      if (simbolo.equals("cadeia vazia")){    //????
-        obtemSimbolo(); 
+      obtemSimbolo();      
       } else {
-         throw new RuntimeException("Erro Sintático esperado 'f' ou 'g'");
-       }
-    }
+         throw new RuntimeException("Erro Sintático ");
+      }
+    
   }
 
 }
