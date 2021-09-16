@@ -22,3 +22,4 @@ end.
 dc_v
 <> <= >= =
 
+testanto sintatico
