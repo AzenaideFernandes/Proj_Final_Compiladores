@@ -17,8 +17,3 @@ begin
   	write(c)
   $
 end.
-
-dc_v
-<> <= >= =
-
-testanto sintatico
