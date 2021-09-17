@@ -13,7 +13,7 @@ public class Sintatico {
   public void analise() {
     obtemSimbolo();
     programa();
-    if (simbolo.equals(" ")) {
+    if (simbolo.equals("")) {
       System.out.println("Tudo Certo !!!");      
     } else {
       throw new RuntimeException("Erro Sintático esperado fim de cadeia");
@@ -22,7 +22,7 @@ public class Sintatico {
 
   private void obtemSimbolo(){
     Token token = scan.nextToken();
-    simbolo = " ";
+    simbolo = "";
     if (token != null) {
       simbolo = token.getTermo();
       System.out.println(simbolo);
