@@ -47,8 +47,6 @@ public class Sintatico {
       } else {
         throw new RuntimeException("Erro Sintático esperado 'program'"); 
       }
-     
-    
   }
     
   private void corpo(){
@@ -87,12 +85,12 @@ public class Sintatico {
   }
 
   private void mais_dc(){
-    if (simbolo.equals(";")) {
-      obtemSimbolo();
-      dc();
-    } else {
-
-    }   
+    if (token != null){
+      if (simbolo.equals(";")) {
+        obtemSimbolo();
+        dc();
+      }
+    } 
   }
 
   private void dc_v(){
@@ -125,12 +123,12 @@ public class Sintatico {
   }
 
   private void mais_var(){
-    if (simbolo.equals(",")){
-      obtemSimbolo();
-      variaveis();
-    } else {
-
-    }  
+    if (token != null){
+      if (simbolo.equals(",")){
+       obtemSimbolo();
+       variaveis();
+      }
+    }
   }
 
   private void comandos(){
@@ -141,13 +139,14 @@ public class Sintatico {
   }
 
   private void mais_comandos(){
-    if (simbolo.equals(";")){
-      obtemSimbolo();      
-        comandos();
-      } else {   
-        throw new RuntimeException("Erro Sintático esperado ';'");
-      //} else {
+    if (token != null){
+      if (simbolo.equals(";")){
+        obtemSimbolo();      
+          comandos();
+       } else {   
+         throw new RuntimeException("Erro Sintático esperado ';'");
       }
+    }
   }
   
   
@@ -247,8 +246,7 @@ public class Sintatico {
       }else if (simbolo.equals(">")){       
         obtemSimbolo(); 
       }else if (simbolo.equals("<")){       
-        obtemSimbolo(); 
-      
+        obtemSimbolo();       
     }
   }
 
@@ -257,7 +255,6 @@ public class Sintatico {
     termo();
     outros_termos();
     }
-
   }
 
   private void termo(){
@@ -269,10 +266,10 @@ public class Sintatico {
   }
 
  private void op_un(){
-    if(simbolo.equals("-")){ 
-      obtemSimbolo();
-    }else{
-
+    if (token != null){
+      if(simbolo.equals("-")){ 
+        obtemSimbolo();
+      }
     }
   }
 
@@ -293,17 +290,15 @@ public class Sintatico {
         expressao();                          
          if (simbolo.equals(")")){
            obtemSimbolo();          
-            }
+          }
       }      
-        
-
   }
 
   private void outros_termos(){
     if (token != null){
-      op_ad();
-      termo();
-      outros_termos();
+        op_ad();
+        termo();
+        outros_termos();      
     }      
   } 
   
@@ -317,12 +312,10 @@ public class Sintatico {
 
   private void mais_fatores(){
     if (token != null){
-    op_mul();
-    fator();
-    mais_fatores(); 
-    }else{
-
-    }        
+      op_mul();
+      fator();
+      mais_fatores(); 
+     }           
   }
 
   
@@ -343,13 +336,14 @@ public class Sintatico {
   
 
   private void pfalsas(){
+    if (token != null){
     //if (simbolo.equals("else")){
-    if (token != null && token.getTipo() == Token.IDENT){    
-      obtemSimbolo();
-      comandos();      
-      } else {
+      if (token != null && token.getTipo() == Token.IDENT){    
+        obtemSimbolo();
+        comandos();      
+        } else {
          throw new RuntimeException("Erro Sintático  22");
-      //}else{
-    }    
+        } 
+    }   
   }
 }

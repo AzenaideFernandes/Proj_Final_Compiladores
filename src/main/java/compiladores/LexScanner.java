@@ -257,7 +257,7 @@ public class LexScanner {
     }
 
     private boolean isEspaco(char c) {
-        return c ==' ' || c == '\n' || c == '\t';
+        return c ==' ' || c == '\n' || c == '\t' || c == '\r';
     }
 
     
