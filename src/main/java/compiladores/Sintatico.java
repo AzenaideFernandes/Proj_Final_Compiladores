@@ -1,10 +1,14 @@
 package compiladores;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Sintatico {
 
   private LexScanner scan;
   private String simbolo;
-  private Token token; 
+  private Token token;
+  private Map<String, Simbolo> tabelaSimbolo = new HashMap<>(); 
 
   public Sintatico(String arq){
     scan = new LexScanner(arq);
