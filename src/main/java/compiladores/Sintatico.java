@@ -21,7 +21,7 @@ public class Sintatico {
   }
 
   private void obtemSimbolo(){
-    Token token = scan.nextToken();
+    token = scan.nextToken();
     simbolo = "";
     if (token != null) {
       simbolo = token.getTermo();
@@ -54,33 +54,44 @@ public class Sintatico {
   private void corpo(){
     if (token != null){
         dc();
-    
-      if (simbolo.equals("begin")) {
-        obtemSimbolo();
-        comandos();     
-     
-       if (simbolo.equals("end")){
-        obtemSimbolo();
-       }
-       // }if (token != null && token.getTipo() == Token.IDENT) {
-       // obtemSimbolo();
-     }
+        if (token != null && token.getTipo() == Token.IDENT) {
+            obtemSimbolo();
+            comandos();    
+          if (token != null && token.getTipo() == Token.IDENT) {
+          obtemSimbolo();
+          } else {
+            throw new RuntimeException("Erro Sintático esperado 'end'"); 
+          } 
+        }else {
+       throw new RuntimeException("Erro Sintático esperado 'begin'");  
+      } 
     }
   }
 
-  private void dc(){
+
+  /*private void dc(){
     if (token != null){
       dc_v();
       mais_dc();
     } else {
 
     }  
+  }*/
+
+  private void dc() {
+    System.out.println("dc");
+    if (token != null && (simbolo.equals("real")||simbolo.equals("integer"))) {
+      dc_v();
+      mais_dc();
+    }
   }
 
   private void mais_dc(){
     if (simbolo.equals(";")) {
       obtemSimbolo();
       dc();
+    } else {
+
     }   
   }
 
@@ -89,8 +100,7 @@ public class Sintatico {
      tipo_var();
       if(simbolo.equals(":")){
        obtemSimbolo();
-       variaveis();
-    
+       variaveis();    
      } else {
       throw new RuntimeException("Erro Sintático esperado ':'");  
      }      
@@ -99,22 +109,18 @@ public class Sintatico {
 
   private void tipo_var(){
     if (token != null && token.getTipo() == Token.IDENT || token.getTipo() == Token.IDENT ) {
-      obtemSimbolo();
-    //if(simbolo.equals("real") || simbolo.equals("integer")){
-     // obtemSimbolo();
+      obtemSimbolo();    
     } else {
       throw new RuntimeException("Erro Sintático esperado 'real' ou 'integer'");
     }
   } 
 
   private void variaveis(){
-    if (token != null && token.getTipo() == Token.IDENT){
-    //if (simbolo.equals("ident")){
+    if (token != null && token.getTipo() == Token.IDENT){    
       obtemSimbolo();
       mais_var();
-
     } else {
-          throw new RuntimeException("Erro Sintático esperado '.'");
+         throw new RuntimeException("Erro Sintático esperado 'ident'");
     }        
   }
 
@@ -122,175 +128,183 @@ public class Sintatico {
     if (simbolo.equals(",")){
       obtemSimbolo();
       variaveis();
+    } else {
+
     }  
   }
 
   private void comandos(){
-    comando();
-     mais_comandos();
+    if (token != null){
+      comando();
+      mais_comandos();
+    }
   }
 
   private void mais_comandos(){
     if (simbolo.equals(";")){
       obtemSimbolo();      
         comandos();
-     } else {   
+      } else {   
         throw new RuntimeException("Erro Sintático esperado ';'");
-    }
+      //} else {
+      }
   }
   
+  
   private void comando(){
-    switch(simbolo){
-      case "read":
-      if (token != null && token.getTipo() == Token.IDENT){
-        obtemSimbolo();
-        }if (simbolo.equals("(")){
-          obtemSimbolo();
-            }if (token != null && token.getTipo() == Token.IDENT){
-          //}if (simbolo.equals("ident")){
-            obtemSimbolo();
-            }if (simbolo.equals(")")){
-              obtemSimbolo();
-        }
-        break;
-      case "write":
+  
+      if(simbolo.equals("read")){
         if (token != null && token.getTipo() == Token.IDENT){
           obtemSimbolo();
-          }if (simbolo.equals(")")){
-          obtemSimbolo();
-            }if (token != null && token.getTipo() == Token.IDENT){
-          //}if (simbolo.equals("ident")){
-            obtemSimbolo();
-            }if (simbolo.equals(")")){
+            if (simbolo.equals("(")){
               obtemSimbolo();
-        }         
-        break;
-      case "ident":
-        if (token != null && token.getTipo() == Token.IDENT){
-        obtemSimbolo();
-          }if (simbolo.equals(":")){
-          obtemSimbolo();
-            }if (simbolo.equals("=")){
-            obtemSimbolo();
-            expressao();
+                if (token != null && token.getTipo() == Token.IDENT){          
+                  obtemSimbolo();
+                    if (simbolo.equals(")")){
+                     obtemSimbolo();
+                    }else {   
+                      throw new RuntimeException("Erro Sintático esperado ')'");
+                    }
+                 }else {   
+                    throw new RuntimeException("Erro Sintático esperado 'ident'");
+                  }
+                }else {   
+                  throw new RuntimeException("Erro Sintático esperado '('");
+                }
+              }
+                        
+         
+      }else if (simbolo.equals("write")){
+          if (token != null && token.getTipo() == Token.IDENT){
+              obtemSimbolo();
+              if (simbolo.equals("(")){
+                obtemSimbolo();
+                if (token != null && token.getTipo() == Token.IDENT){          
+                   obtemSimbolo();
+                  if (simbolo.equals(")")){
+                       obtemSimbolo();
+              }else {   
+                throw new RuntimeException("Erro Sintático esperado ')'");
+              }
+           }else {   
+              throw new RuntimeException("Erro Sintático esperado 'ident'");
+            }
+          }else {   
+            throw new RuntimeException("Erro Sintático esperado '('");
+          }
         }
-        break;
-
-      case "if":
+       
+      }else if (token != null && token.getTipo() == Token.IDENT){         
+            obtemSimbolo();
+            if (simbolo.equals(":=")){
+             obtemSimbolo();              
+              expressao();
+              }else {   
+                throw new RuntimeException("Erro Sintático esperado ':='");
+               }         
+             
+      }else if (simbolo.equals("if")){
          if (token != null && token.getTipo() == Token.IDENT){
-        obtemSimbolo();
-        condicao();
-          }if (token != null && token.getTipo() == Token.IDENT){
-          //}if (simbolo.equals("then")){
-          obtemSimbolo();
-          comandos();
-          pfalsas();
-          }if (simbolo.equals("$")){
             obtemSimbolo();
-          }    
-        break; 
-      default:   // O QUE SIGNIFICA AQUI NO CODIGO?
-      throw new RuntimeException("Erro Sintático esperado 'c' ou 'e'");
-    }
-
+            condicao();
+           if (token != null && token.getTipo() == Token.IDENT){ 
+              obtemSimbolo();       
+              comandos();
+              pfalsas();
+              if (simbolo.equals("$")){
+             //if (token != null && token.getTipo() == Token.IDENT){
+                obtemSimbolo();
+              }else {   
+                throw new RuntimeException("Erro Sintático esperado '$'");
+               }
+            }else {   
+               throw new RuntimeException("Erro Sintático esperado 'then'");
+            }
+          }else {           
+          throw new RuntimeException("Erro Sintático esperado 'if'");
+        }
+      }
   }
 
   private void condicao(){
-    expressao();
-    relacao();
-    expressao();   // TENHO DVIDA AQUI...HA UMA RECURÇÃO... O QUE FAZER?
-
+    if (token != null){
+      expressao();
+      relacao();
+      expressao();   // TENHO DVIDA AQUI...HA UMA RECURÇÃO... O QUE FAZER?
+    }
   }
 
   private void relacao(){
-    switch(simbolo){
-      case "=":
+   
+      if(simbolo.equals("=")){      
         obtemSimbolo();                
-        break;
-
-      case "<>":
-        obtemSimbolo();               
-        break;
-
-      case ">=":
-        obtemSimbolo();        
-        break;
-
-      case "<=": 
-        obtemSimbolo();        
-        break;
-
-        case ">": 
-        obtemSimbolo();        
-        break;
-
-        case "<": 
-        obtemSimbolo();        
-        break;
-
-      default:   // O QUE SIGNIFICA AQUI NO CODIGO?
-      throw new RuntimeException("Erro Sintático ");
+      }else if (simbolo.equals("<>")){       
+        obtemSimbolo(); 
+      }else if (simbolo.equals(">=")){       
+        obtemSimbolo(); 
+      }else if (simbolo.equals("<=")){       
+        obtemSimbolo(); 
+      }else if (simbolo.equals(">")){       
+        obtemSimbolo(); 
+      }else if (simbolo.equals("<")){       
+        obtemSimbolo(); 
+      
     }
-
   }
 
   private void expressao(){
+    if (token != null){
     termo();
     outros_termos();
+    }
 
   }
 
   private void termo(){
+    if (token != null){
     op_un();
     fator();
     mais_fatores();
-
+    }
   }
 
  private void op_un(){
     if(simbolo.equals("-")){ 
       obtemSimbolo();
+    }else{
+
     }
   }
 
   private void fator(){
-    switch(simbolo){
-      case "ident":
-      if (token != null && token.getTipo() == Token.IDENT){
+       
+     if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo();
-      }                
-        break;
 
-      case "numero_int":                
-        if (token != null && token.getTipo() == Token.IDENT){
-          obtemSimbolo();
-        }
-        break;
-
-      case "numero_real":
-      if (token != null && token.getTipo() == Token.IDENT){
+      } else if (simbolo.equals("numero_int")){
+      //} else if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo(); 
-      }       
-        break;
-
-      case "(>)":  
+     
+      }else if (simbolo.equals("numero_real")){
+      //} else if (token != null && token.getTipo() == Token.IDENT){
+        obtemSimbolo(); 
+      } else if (simbolo.equals("(")){    
         obtemSimbolo();
         expressao();                          
-        if (simbolo.equals(")")){
-          obtemSimbolo();          
-          }    
-        break;
-
-      default:   // O QUE SIGNIFICA AQUI NO CODIGO?
-      throw new RuntimeException("Erro Sintático ");
-    }
+         if (simbolo.equals(")")){
+           obtemSimbolo();          
+            }
+      }      
+        
 
   }
 
   private void outros_termos(){
+    if (token != null){
       op_ad();
       termo();
-      outros_termos();      
+      outros_termos();
+    }      
   } 
   
   private void op_ad(){
@@ -302,27 +316,40 @@ public class Sintatico {
   }
 
   private void mais_fatores(){
+    if (token != null){
     op_mul();
     fator();
-    mais_fatores();         
+    mais_fatores(); 
+    }else{
+
+    }        
   }
 
+  
   private void op_mul(){
-    if (simbolo.equals("*")  || simbolo.equals("/")){
+   // if (token != null && token.getTipo() == Token.IDENT){
+     //obtemSimbolo();
+    if (simbolo.equals("*")){
       obtemSimbolo();
+    } else if (simbolo.equals("/")){
+    //} else if (token != null && token.getTipo() == Token.IDENT){
+      obtemSimbolo();
+     
     } else {
       throw new RuntimeException("Erro Sintático esperado '*' ou '/'");
-    }     
-  }
+    }
+  
+  }          
+  
 
   private void pfalsas(){
-    if (token != null && token.getTipo() == Token.IDENT){
-    //if(simbolo.equals("else")){
-      obtemSimbolo();      
+    //if (simbolo.equals("else")){
+    if (token != null && token.getTipo() == Token.IDENT){    
+      obtemSimbolo();
+      comandos();      
       } else {
-         throw new RuntimeException("Erro Sintático ");
-      }
-    
+         throw new RuntimeException("Erro Sintático  22");
+      //}else{
+    }    
   }
-
 }

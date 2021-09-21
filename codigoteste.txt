@@ -3,7 +3,7 @@ program teste
 	integer: c, d;
 begin 
 	read(a);
-	read(c);
+	read(c); 
   b := a * a + a;
   d := 2*c + c;
   if a > b then
@@ -17,3 +17,5 @@ begin
   	write(c)
   $
 end.
+
+ >= <> >= <= = > <
