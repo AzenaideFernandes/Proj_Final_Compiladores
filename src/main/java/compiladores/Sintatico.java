@@ -56,9 +56,11 @@ public class Sintatico {
   private void corpo(){
     if (token != null){
         dc();
+        //if (simbolo.equals("begin")) {
         if (token != null && token.getTipo() == Token.IDENT) {
             obtemSimbolo();
-            comandos();    
+            comandos();
+            //if (simbolo.equals("end")) {    
           if (token != null && token.getTipo() == Token.IDENT) {
           obtemSimbolo();
           } else {
@@ -69,16 +71,6 @@ public class Sintatico {
       } 
     }
   }
-
-
-  /*private void dc(){
-    if (token != null){
-      dc_v();
-      mais_dc();
-    } else {
-
-    }  
-  }*/
 
   private void dc() {
     System.out.println("dc");
@@ -93,6 +85,8 @@ public class Sintatico {
       if (simbolo.equals(";")) {
         obtemSimbolo();
         dc();
+      } else {
+        throw new RuntimeException("Erro Sintático esperado ';'");  
       }
     } 
   }
@@ -131,6 +125,8 @@ public class Sintatico {
       if (simbolo.equals(",")){
        obtemSimbolo();
        variaveis();
+     // } else {
+     //   throw new RuntimeException("Erro Sintático esperado ','"); 
       }
     }
   }
@@ -152,8 +148,7 @@ public class Sintatico {
       }
     }
   }
-  
-  
+    
   private void comando(){
   
       if(simbolo.equals("read")){
@@ -214,8 +209,7 @@ public class Sintatico {
               obtemSimbolo();       
               comandos();
               pfalsas();
-              if (simbolo.equals("$")){
-             //if (token != null && token.getTipo() == Token.IDENT){
+              if (simbolo.equals("$")){             
                 obtemSimbolo();
               }else {   
                 throw new RuntimeException("Erro Sintático esperado '$'");
@@ -233,7 +227,7 @@ public class Sintatico {
     if (token != null){
       expressao();
       relacao();
-      expressao();   // TENHO DVIDA AQUI...HA UMA RECURÇÃO... O QUE FAZER?
+      expressao();   
     }
   }
 
@@ -273,6 +267,8 @@ public class Sintatico {
     if (token != null){
       if(simbolo.equals("-")){ 
         obtemSimbolo();
+     // } else {
+       // throw new RuntimeException("Erro Sintático esperado '-'"); 
       }
     }
   }
@@ -299,7 +295,7 @@ public class Sintatico {
   }
 
   private void outros_termos(){
-    if (token != null){
+    if (token != null && (simbolo.equals("+")  || simbolo.equals("-"))){
         op_ad();
         termo();
         outros_termos();      
@@ -314,31 +310,24 @@ public class Sintatico {
     }     
   }
 
-  private void mais_fatores(){
-    if (token != null){
+  private void mais_fatores(){    
+    if (token != null && (simbolo.equals("*")  || simbolo.equals("/"))){
       op_mul();
       fator();
       mais_fatores(); 
      }           
   }
-
   
-  private void op_mul(){
-   // if (token != null && token.getTipo() == Token.IDENT){
-     //obtemSimbolo();
+  private void op_mul(){      
     if (simbolo.equals("*")){
-      obtemSimbolo();
-    } else if (simbolo.equals("/")){
-    //} else if (token != null && token.getTipo() == Token.IDENT){
-      obtemSimbolo();
-     
-    } else {
+      obtemSimbolo();   
+    } else if (simbolo.equals("/")){    
+      obtemSimbolo();     
+      } else {
       throw new RuntimeException("Erro Sintático esperado '*' ou '/'");
-    }
-  
-  }          
-  
-
+      }    
+  }         
+ 
   private void pfalsas(){
     if (token != null){
     //if (simbolo.equals("else")){
