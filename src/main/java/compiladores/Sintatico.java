@@ -54,15 +54,14 @@ public class Sintatico {
   }
     
   private void corpo(){
+    System.out.println("corpo");
     if (token != null){
         dc();
-        //if (simbolo.equals("begin")) {
-        if (token != null && token.getTipo() == Token.IDENT) {
+        if (simbolo.equals("begin")) {        
             obtemSimbolo();
             comandos();
-            //if (simbolo.equals("end")) {    
-          if (token != null && token.getTipo() == Token.IDENT) {
-          obtemSimbolo();
+            if (simbolo.equals("end")) {  
+                obtemSimbolo();
           } else {
             throw new RuntimeException("Erro Sintático esperado 'end'"); 
           } 
@@ -81,17 +80,17 @@ public class Sintatico {
   }
 
   private void mais_dc(){
+    System.out.println("mais_dc");
     if (token != null){
       if (simbolo.equals(";")) {
         obtemSimbolo();
-        dc();
-      } else {
-        throw new RuntimeException("Erro Sintático esperado ';'");  
+        dc();       
       }
     } 
   }
 
   private void dc_v(){
+    System.out.println("dc_v");
     if (token != null){
      tipo_var();
       if(simbolo.equals(":")){
@@ -104,34 +103,36 @@ public class Sintatico {
   }
 
   private void tipo_var(){
+    System.out.println("tipo_var");
     if (token != null && token.getTipo() == Token.IDENT || token.getTipo() == Token.IDENT ) {
       obtemSimbolo();    
     } else {
-      throw new RuntimeException("Erro Sintático esperado 'real' ou 'integer'");
+      throw new RuntimeException("Erro Sintático erro em '6' ");
     }
   } 
 
   private void variaveis(){
+    System.out.println("variaveis");
     if (token != null && token.getTipo() == Token.IDENT){    
       obtemSimbolo();
       mais_var();
     } else {
-         throw new RuntimeException("Erro Sintático esperado 'ident'");
+         throw new RuntimeException("Erro Sintático erro em '7'");
     }        
   }
 
   private void mais_var(){
+    System.out.println("mais_var");
     if (token != null){
       if (simbolo.equals(",")){
        obtemSimbolo();
-       variaveis();
-     // } else {
-     //   throw new RuntimeException("Erro Sintático esperado ','"); 
+       variaveis();      
       }
     }
   }
 
   private void comandos(){
+    System.out.println("comandos");
     if (token != null){
       comando();
       mais_comandos();
@@ -139,20 +140,19 @@ public class Sintatico {
   }
 
   private void mais_comandos(){
+    System.out.println("mais_comandos");
     if (token != null){
       if (simbolo.equals(";")){
         obtemSimbolo();      
-          comandos();
-       } else {   
-         throw new RuntimeException("Erro Sintático esperado ';'");
+          comandos();       
       }
     }
   }
     
   private void comando(){
+    System.out.println("comando");
   
-      if(simbolo.equals("read")){
-        if (token != null && token.getTipo() == Token.IDENT){
+      if(simbolo.equals("read")){        
           obtemSimbolo();
             if (simbolo.equals("(")){
               obtemSimbolo();
@@ -168,12 +168,9 @@ public class Sintatico {
                   }
                 }else {   
                   throw new RuntimeException("Erro Sintático esperado '('");
-                }
-              }
-                        
+                }                                    
          
-      }else if (simbolo.equals("write")){
-          if (token != null && token.getTipo() == Token.IDENT){
+      }else if (simbolo.equals("write")){          
               obtemSimbolo();
               if (simbolo.equals("(")){
                 obtemSimbolo();
@@ -190,25 +187,24 @@ public class Sintatico {
           }else {   
             throw new RuntimeException("Erro Sintático esperado '('");
           }
-        }
+
        
-      }else if (token != null && token.getTipo() == Token.IDENT){         
+     /* }else if (token != null && token.getTipo() == Token.IDENT){         
             obtemSimbolo();
             if (simbolo.equals(":=")){
              obtemSimbolo();              
               expressao();
               }else {   
                 throw new RuntimeException("Erro Sintático esperado ':='");
-               }         
+               } */        
              
-      }else if (simbolo.equals("if")){
-         if (token != null && token.getTipo() == Token.IDENT){
+      }else if (simbolo.equals("if")){               
             obtemSimbolo();
             condicao();
-           if (token != null && token.getTipo() == Token.IDENT){ 
+            if (simbolo.equals("then")){           
               obtemSimbolo();       
               comandos();
-              pfalsas();
+              pfalsa();
               if (simbolo.equals("$")){             
                 obtemSimbolo();
               }else {   
@@ -217,13 +213,23 @@ public class Sintatico {
             }else {   
                throw new RuntimeException("Erro Sintático esperado 'then'");
             }
-          }else {           
-          throw new RuntimeException("Erro Sintático esperado 'if'");
-        }
-      }
+         // }else {           
+         // throw new RuntimeException("Erro Sintático esperado 'if'");
+        //} 
+        
+      }else if (token != null && token.getTipo() == Token.IDENT){         
+        obtemSimbolo();
+        if (simbolo.equals(":=")){
+         obtemSimbolo();              
+          expressao();
+          }else {   
+            throw new RuntimeException("Erro Sintático esperado ':='");
+           }        
+      }            
   }
 
   private void condicao(){
+    System.out.println("condicao");
     if (token != null){
       expressao();
       relacao();
@@ -232,6 +238,7 @@ public class Sintatico {
   }
 
   private void relacao(){
+    System.out.println("relacao");
    
       if(simbolo.equals("=")){      
         obtemSimbolo();                
@@ -249,6 +256,7 @@ public class Sintatico {
   }
 
   private void expressao(){
+    System.out.println("expressao");
     if (token != null){
     termo();
     outros_termos();
@@ -256,6 +264,7 @@ public class Sintatico {
   }
 
   private void termo(){
+    System.out.println("termo");
     if (token != null){
     op_un();
     fator();
@@ -264,26 +273,22 @@ public class Sintatico {
   }
 
  private void op_un(){
+  System.out.println("op_un");
     if (token != null){
       if(simbolo.equals("-")){ 
-        obtemSimbolo();
-     // } else {
-       // throw new RuntimeException("Erro Sintático esperado '-'"); 
+        obtemSimbolo();      
       }
     }
   }
 
   private void fator(){
+    System.out.println("fator");
        
      if (token != null && token.getTipo() == Token.IDENT){
-        obtemSimbolo();
-
-      } else if (simbolo.equals("numero_int")){
-      //} else if (token != null && token.getTipo() == Token.IDENT){
-        obtemSimbolo(); 
-     
-      }else if (simbolo.equals("numero_real")){
-      //} else if (token != null && token.getTipo() == Token.IDENT){
+        obtemSimbolo();      
+      } else if (token != null && token.getTipo() == Token.NUMERO){
+        obtemSimbolo();   
+      } else if (token != null && token.getTipo() == Token.NUMERO){
         obtemSimbolo(); 
       } else if (simbolo.equals("(")){    
         obtemSimbolo();
@@ -295,6 +300,7 @@ public class Sintatico {
   }
 
   private void outros_termos(){
+    System.out.println("outros_termos");
     if (token != null && (simbolo.equals("+")  || simbolo.equals("-"))){
         op_ad();
         termo();
@@ -303,6 +309,7 @@ public class Sintatico {
   } 
   
   private void op_ad(){
+    System.out.println("op_ad");
     if (simbolo.equals("+")  || simbolo.equals("-")){
       obtemSimbolo();
     } else {
@@ -310,7 +317,8 @@ public class Sintatico {
     }     
   }
 
-  private void mais_fatores(){    
+  private void mais_fatores(){
+    System.out.println("mais_fatores");    
     if (token != null && (simbolo.equals("*")  || simbolo.equals("/"))){
       op_mul();
       fator();
@@ -318,7 +326,8 @@ public class Sintatico {
      }           
   }
   
-  private void op_mul(){      
+  private void op_mul(){
+    System.out.println("op_mul");      
     if (simbolo.equals("*")){
       obtemSimbolo();   
     } else if (simbolo.equals("/")){    
@@ -328,10 +337,10 @@ public class Sintatico {
       }    
   }         
  
-  private void pfalsas(){
+  private void pfalsa(){
+    System.out.println("pfalsa");
     if (token != null){
-    //if (simbolo.equals("else")){
-      if (token != null && token.getTipo() == Token.IDENT){    
+    if (simbolo.equals("else")){        
         obtemSimbolo();
         comandos();      
         } else {
