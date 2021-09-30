@@ -12,7 +12,10 @@ public class App
             System.out.println(token);
         }while(token != null);*/
 
-      Sintatico sintatico = new Sintatico ("codigoteste.txt");
-        sintatico.analise();
+     // Sintatico sintatico = new Sintatico ("codigoteste.txt");
+        //sintatico.analise();
+
+      SintaticoSem sintaticoSem = new SintaticoSem ("codigoteste.txt");
+        sintaticoSem.analise();
     }
 }

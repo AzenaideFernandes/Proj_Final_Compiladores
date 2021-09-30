@@ -3,14 +3,18 @@ package compiladores;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Sintatico {
+
+public class SintaticoSem {
 
   private LexScanner scan;
   private String simbolo;
   private Token token;
-  private Map<String, Simbolo> tabelaSimbolo = new HashMap<>(); 
+  private int temp;
+  private StringBuilder codigo = new StringBuilder("operador;arg1;arg2;result\n");
+  private Map<String, Simbolo> tabelaSimbolo = new HashMap<>();
+  private int tipo; 
 
-  public Sintatico(String arq){
+  public SintaticoSem(String arq){
     scan = new LexScanner(arq);
   }
 
@@ -23,6 +27,15 @@ public class Sintatico {
       throw new RuntimeException("Erro Sintático esperado fim de cadeia");
     }
   }
+
+  private String geratemp(){
+    return "t" + temp++;
+  }
+
+  private void code(String op, String arg1, String arg2, String result){
+    codigo.append(op+";"+arg1+";"+arg2+";"+result+"\n");
+  }
+
 
   private void obtemSimbolo(){
     token = scan.nextToken();
@@ -113,7 +126,9 @@ public class Sintatico {
 
   private void variaveis(){
     System.out.println("variaveis");
-    if (token != null && token.getTipo() == Token.IDENT){    
+    if (token != null && token.getTipo() == Token.IDENT){ 
+      this.tipo= Token.IDENT;                               //semantico
+      tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));   //semantico
       obtemSimbolo();
       mais_var();
     } else {
@@ -150,13 +165,18 @@ public class Sintatico {
   }
     
   private void comando(){
-    System.out.println("comando");
-  
-      if(simbolo.equals("read")){        
+    System.out.println("comando");  
+      if(simbolo.equals("read")){                     
           obtemSimbolo();
             if (simbolo.equals("(")){
               obtemSimbolo();
-                if (token != null && token.getTipo() == Token.IDENT){          
+                if (token != null && token.getTipo() == Token.IDENT){ 
+                  if (tabelaSimbolo.containsKey(token.getTermo())){
+                    System.out.println(simbolo); 
+                    //throw new RuntimeException("Erro semantico");
+                  }else{
+                    tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));
+                  }          
                   obtemSimbolo();
                     if (simbolo.equals(")")){
                      obtemSimbolo();
@@ -187,7 +207,6 @@ public class Sintatico {
           }else {   
             throw new RuntimeException("Erro Sintático esperado '('");
           }
-
              
       }else if (simbolo.equals("if")){               
             obtemSimbolo();
@@ -204,9 +223,13 @@ public class Sintatico {
             }else {   
                throw new RuntimeException("Erro Sintático esperado 'then'");
             }
-         
-        
-      }else if (token != null && token.getTipo() == Token.IDENT){         
+                
+      }else if (token != null && token.getTipo() == Token.IDENT){ 
+        if (tabelaSimbolo.containsKey(token.getTermo())){
+          System.out.println(simbolo);;
+        } else{
+         tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));
+        }          
         obtemSimbolo();
         if (simbolo.equals(":=")){
          obtemSimbolo();              
@@ -274,6 +297,8 @@ public class Sintatico {
     System.out.println("fator");
        
      if (token != null && token.getTipo() == Token.IDENT){
+      this.tipo= Token.IDENT;
+      tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));
         obtemSimbolo();      
       } else if (token != null && token.getTipo() == Token.NUMERO){
         obtemSimbolo();   
