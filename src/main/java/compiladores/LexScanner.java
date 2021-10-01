@@ -109,8 +109,10 @@ public class LexScanner {
                     if(isDigito(c)) {
                         estado = 3;
                         termo += c;
-                    } else if (!isLetra(c)) {
-                        estado = 4;
+                    } else if (!isLetra(c)) {                   
+                        estado = 4;                     
+                    } else if (c=='.') {    
+                        estado =6;
                     } else {
                         throw new RuntimeException("Numero não reconhecido");
                     }
@@ -118,10 +120,36 @@ public class LexScanner {
 
                 case 4:
                     token = new Token();
-                    token.setTipo(Token.NUMERO);
+                    token.setTipo(Token.NUMERO_INT);
                     token.setTermo(termo);
                     pos -= 2;
-                    return token;
+                    return token;    
+
+                case 6:                    
+                    if(isDigito(c)) {
+                        estado = 7;
+                        termo += c;
+                    } else if (!isLetra(c)) {                   
+                        estado = 8;                 
+                        pos -= 2;
+                    }
+                    break;
+
+                case 7:                    
+                    if(isDigito(c)) {
+                        estado = 7;
+                        termo += c;                
+                        pos -= 2;
+                    }
+                    break;
+
+                case 8:
+                    token = new Token();
+                    token.setTipo(Token.NUMERO_REAL);
+                    token.setTermo(termo);
+                    pos -= 2;
+                    return token;    
+
                 
                 case 9:
                     if (c == '=') {

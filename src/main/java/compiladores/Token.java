@@ -3,7 +3,7 @@ package compiladores;
 public class Token {
 
     public static final int IDENT = 0;
-    public static final int NUMERO = 1;
+    public static final int NUMERO_INT = 1;
     public static final int ESPACO = 2;    
     public static final int DOIS_PONTOS = 3;
     public static final int ATRIBUICAO = 4;
@@ -24,6 +24,7 @@ public class Token {
     public static final int OPE_ARIT_MULT = 19;
     public static final int LAMBIDA = 20;
     public static final int SIFRAO = 21;
+    public static final int NUMERO_REAL = 22;
     
     
 

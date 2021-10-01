@@ -1,14 +1,14 @@
 package compiladores;
 
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 
 public class Sintatico {
 
   private LexScanner scan;
   private String simbolo;
   private Token token;
-  private Map<String, Simbolo> tabelaSimbolo = new HashMap<>(); 
+  //private Map<String, Simbolo> tabelaSimbolo = new HashMap<>(); 
 
   public Sintatico(String arq){
     scan = new LexScanner(arq);
@@ -275,9 +275,9 @@ public class Sintatico {
        
      if (token != null && token.getTipo() == Token.IDENT){
         obtemSimbolo();      
-      } else if (token != null && token.getTipo() == Token.NUMERO){
+      } else if (token != null && token.getTipo() == Token.NUMERO_INT){
         obtemSimbolo();   
-      } else if (token != null && token.getTipo() == Token.NUMERO){
+      } else if (token != null && token.getTipo() == Token.NUMERO_REAL){
         obtemSimbolo(); 
       } else if (simbolo.equals("(")){    
         obtemSimbolo();

@@ -9,8 +9,8 @@ public class SintaticoSem {
   private LexScanner scan;
   private String simbolo;
   private Token token;
-  private int temp;
-  private StringBuilder codigo = new StringBuilder("operador;arg1;arg2;result\n");
+ // private int temp;
+ // private StringBuilder codigo = new StringBuilder("operador;arg1;arg2;result\n");
   private Map<String, Simbolo> tabelaSimbolo = new HashMap<>();
   private int tipo; 
 
@@ -28,13 +28,13 @@ public class SintaticoSem {
     }
   }
 
-  private String geratemp(){
+ /* private String geratemp(){
     return "t" + temp++;
   }
 
   private void code(String op, String arg1, String arg2, String result){
     codigo.append(op+";"+arg1+";"+arg2+";"+result+"\n");
-  }
+  }*/
 
 
   private void obtemSimbolo(){
@@ -118,6 +118,12 @@ public class SintaticoSem {
   private void tipo_var(){
     System.out.println("tipo_var");
     if (token != null && token.getTipo() == Token.IDENT || token.getTipo() == Token.IDENT ) {
+      if(token.getTermo().equals("integer")){    //semantico
+        this.tipo = Token.NUMERO_INT;            //semantico
+      }else{
+        this.tipo = Token.NUMERO_REAL;          //semantico
+      }
+      
       obtemSimbolo();    
     } else {
       throw new RuntimeException("Erro Sintático erro em '6' ");
@@ -126,9 +132,13 @@ public class SintaticoSem {
 
   private void variaveis(){
     System.out.println("variaveis");
-    if (token != null && token.getTipo() == Token.IDENT){ 
+    if (token != null && token.getTipo() == Token.IDENT){
+      if (tabelaSimbolo.containsKey(token.getTermo())){          //semantico  
+      throw new RuntimeException("Erro semantico:" + token.getTermo());
+      }else{
       this.tipo= Token.IDENT;                               //semantico
       tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));   //semantico
+      }
       obtemSimbolo();
       mais_var();
     } else {
@@ -300,9 +310,9 @@ public class SintaticoSem {
       this.tipo= Token.IDENT;
       tabelaSimbolo.put(token.getTermo(), new Simbolo(this.tipo, token.getTermo()));
         obtemSimbolo();      
-      } else if (token != null && token.getTipo() == Token.NUMERO){
+      } else if (token != null && token.getTipo() == Token.NUMERO_INT){
         obtemSimbolo();   
-      } else if (token != null && token.getTipo() == Token.NUMERO){
+      } else if (token != null && token.getTipo() == Token.NUMERO_REAL){
         obtemSimbolo(); 
       } else if (simbolo.equals("(")){    
         obtemSimbolo();
