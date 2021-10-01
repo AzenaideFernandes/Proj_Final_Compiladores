@@ -9,8 +9,8 @@ public class SintaticoSem {
   private LexScanner scan;
   private String simbolo;
   private Token token;
- // private int temp;
- // private StringBuilder codigo = new StringBuilder("operador;arg1;arg2;result\n");
+  private int temp;
+  private StringBuilder codigo = new StringBuilder("operador;arg1;arg2;result\n");
   private Map<String, Simbolo> tabelaSimbolo = new HashMap<>();
   private int tipo; 
 
@@ -28,13 +28,13 @@ public class SintaticoSem {
     }
   }
 
- /* private String geratemp(){
+  private String geratemp(){
     return "t" + temp++;
   }
 
   private void code(String op, String arg1, String arg2, String result){
     codigo.append(op+";"+arg1+";"+arg2+";"+result+"\n");
-  }*/
+  }
 
 
   private void obtemSimbolo(){
