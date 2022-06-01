@@ -1,3 +1,3 @@
 # pro_compilador_01
-projeto compiladores
+Projeto Compiladores - 
 Projeto final da Disciplina Compiladores Implementado em Linguagem JAVA
